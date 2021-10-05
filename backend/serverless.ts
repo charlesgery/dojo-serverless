@@ -37,7 +37,7 @@ const serverlessConfiguration: AwsConfig.Serverless = {
         },
       ],
     },
-    virus: {
+    getVirus: {
       handler: 'src/handlers/virus/getVirus.main',
       events: [
         {
@@ -46,6 +46,33 @@ const serverlessConfiguration: AwsConfig.Serverless = {
             path: 'virus',
             cors: true,
           }
+        },
+      ]
+    },
+    deleteVirus: {
+      handler: 'src/handlers/virus/deleteVirus.main',
+      events: [
+        {
+          http: {
+            method: 'delete',
+            path: 'virus/{id}',
+            cors: true,
+            request: {
+              parameters: {
+                paths: {
+                  id: true
+                }
+              }
+            }
+          }
+        },
+      ]
+    },
+    createVirus: {
+      handler: 'src/handlers/virus/createVirus.main',
+      events: [
+        {
+          schedule: 'cron(0/1 * * * ? *)'
         }
       ]
     }
