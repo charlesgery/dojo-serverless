@@ -3,6 +3,7 @@ import { Typography, Row, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { v4 } from 'uuid';
+import { useAsync } from 'react-use';
 
 import virus1 from 'assets/Virus1.png';
 import virus2 from 'assets/Virus2.png';
@@ -58,12 +59,24 @@ const getRandomVirus = () => ({
   src: VirusImgs[getRandomPosition(6)],
 });
 
+const getVirus = (id: string) => ({
+  id: id,
+  positionX: getRandomPosition(100),
+  positionY: getRandomPosition(100),
+  src: VirusImgs[getRandomPosition(6)],
+});
+
 export default () => {
-  const [viruses, setViruses] = useState<VirusProps[]>([
-    getRandomVirus(),
-    getRandomVirus(),
-    getRandomVirus(),
-  ]);
+  const [viruses, setViruses] = useState<VirusProps[]>([]);
+
+  useAsync(async () => {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/virus?id=155`,
+      { method: 'GET' },
+    );
+    const viruses = await response.json();
+    setViruses(viruses.map(({ id }: { id: string }) => getVirus(id)));
+  });
 
   const addVirus = () =>
     setViruses((prevViruses) => prevViruses.concat(getRandomVirus()));
