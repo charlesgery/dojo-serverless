@@ -81,8 +81,18 @@ export default () => {
   const addVirus = () =>
     setViruses((prevViruses) => prevViruses.concat(getRandomVirus()));
 
-  const killVirus = (virusId: string) =>
+  const killVirus = (virusId: string) => {
+
+    const deleteAction = async () => {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/virus/${virusId}`,
+        { method: 'DELETE' },
+      );
+    }
+
     setViruses((prevViruses) => prevViruses.filter(({ id }) => id !== virusId));
+  }
+    
 
   return (
     <>
