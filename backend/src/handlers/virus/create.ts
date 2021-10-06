@@ -18,8 +18,6 @@ export const main: APIGatewayProxyHandler = async () => {
     .promise();
 
 
-  console.log(Items)
-
   const sendMessageToClient = async (url :string, connectionId: string, payload: string) =>
   new Promise((resolve, reject) => {
     const apigatewaymanagementapi = new ApiGatewayManagementApi({
@@ -42,7 +40,6 @@ export const main: APIGatewayProxyHandler = async () => {
   });
 
   Items.forEach(connection => {
-    console.log('sending message to', connection)
       sendMessageToClient(connection.endpoint, connection.sortKey, uuid());
   })
 
