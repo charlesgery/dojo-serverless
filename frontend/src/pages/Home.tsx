@@ -78,7 +78,7 @@ export default () => {
       { method: 'POST' },
     );
     const { id } = await response.json();
-    setViruses((prevViruses) => prevViruses.concat(getRandomVirus(id)));
+    // setViruses((prevViruses) => prevViruses.concat(getRandomVirus(id)));
   };
 
   const killVirus = async (virusId: string) => {
@@ -89,8 +89,7 @@ export default () => {
   };
 
   websocketConnexion.onmessage = (message) => {
-    const data = JSON.parse(message.data);
-    const virusId = data.virusId;
+    const virusId = JSON.parse(message.data);
     if (virusId) {
       setViruses((prevViruses) => prevViruses.concat(getRandomVirus(virusId)));
     }
