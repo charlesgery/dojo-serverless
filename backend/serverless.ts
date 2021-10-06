@@ -89,7 +89,26 @@ const serverlessConfiguration: AwsConfig.Serverless = {
         },
       ],
     },
-
+    connect: {
+      handler: 'src/handlers/real-time/connect.main',
+      events: [
+        {
+          websocket: {
+            route: '$connect',
+          },
+        },
+      ],
+    },
+    disconnect: {
+      handler: 'src/handlers/real-time/disconnect.main',
+      events: [
+        {
+          websocket: {
+            route: '$disconnect',
+          }
+        }
+      ]
+    }
     //  --- WEBSOCKET ---
     // TODO: trigger connect lambda on websocket connection
 
