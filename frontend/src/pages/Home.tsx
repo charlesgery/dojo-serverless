@@ -88,13 +88,13 @@ export default () => {
     setViruses((prevViruses) => prevViruses.filter(({ id }) => id !== virusId));
   };
 
-  // websocketConnexion.onmessage = (message) => {
-  //   const data = JSON.parse(message.data);
-  //   const virusId = data.virusId;
-  //   if (virusId) {
-  //     setViruses((prevViruses) => prevViruses.concat(getRandomVirus(virusId)));
-  //   }
-  // };
+  websocketConnexion.onmessage = (message) => {
+    const data = JSON.parse(message.data);
+    const virusId = data.virusId;
+    if (virusId) {
+      setViruses((prevViruses) => prevViruses.concat(getRandomVirus(virusId)));
+    }
+  };
 
   return (
     <>
