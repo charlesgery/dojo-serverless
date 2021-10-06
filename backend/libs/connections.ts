@@ -15,10 +15,11 @@ export const createConnection = async (
 ): Promise<void> => {
   // TODO insert a connection in the DynamoDB
   const params = {
-    Table: 'dojo-serverless-table',
-    Key: {
+    TableName: 'dojo-serverless-table',
+    Item: {
       partitionKey: 'Connection',
-      sortKey: connectionId, endpoint,
+      sortKey: connectionId, 
+      endpoint,
     }
   }
   await documentClient.put(params).promise();
@@ -27,7 +28,7 @@ export const createConnection = async (
 export const deleteConnection = async (connectionId: string): Promise<void> => {
   // TODO delete a connection from the DynamoDB
   const params = {
-    Table: 'dojo-serverless-table',
+    TableName: 'dojo-serverless-table',
     Key: {
       partitionKey: 'Connection',
       sortKey: connectionId,
