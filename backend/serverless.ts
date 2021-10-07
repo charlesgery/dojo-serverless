@@ -2,7 +2,7 @@ import * as AwsConfig from 'serverless/aws';
 
 import ApiGatewayErrors from './resources/apiGatewayErrors';
 import DojoServerlessTable from './resources/dynamodb';
-// import ApplicationEventBus from './resources/eventBridge';
+import ApplicationEventBus from './resources/eventBridge';
 
 const serverlessConfiguration: AwsConfig.Serverless = {
   service: 'dojo-serverless-backend',
@@ -30,7 +30,10 @@ const serverlessConfiguration: AwsConfig.Serverless = {
         ],
         Resource: { 'Fn::GetAtt': ['DojoServerlessTable', 'Arn'] },
       },
-      // { Effect: 'Allow', Action: ['events:PutEvents'], Resource: '*' },
+      { 
+        Effect: 'Allow',
+        Action: ['events:PutEvents'],
+        Resource: '*' },
     ],
     usagePlan: {
       quota: {
@@ -122,8 +125,8 @@ const serverlessConfiguration: AwsConfig.Serverless = {
     },
 
     //  --- STATE MACHINE ---
-    requestNothing: {
-      handler: 'src/handlers/stateMachine/requestNothing.main',
+    spreadVirus: {
+      handler: 'src/handlers/stateMachine/spreadVirus.main',
       events: [
         {
           eventBridge: {
@@ -171,7 +174,7 @@ const serverlessConfiguration: AwsConfig.Serverless = {
     Resources: {
       ...ApiGatewayErrors,
       DojoServerlessTable,
-      // ApplicationEventBus,
+      ApplicationEventBus,
     },
   },
 };
