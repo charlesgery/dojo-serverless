@@ -1,6 +1,6 @@
 # Serverless dojo
 
-Welcome to the serverless dojo!
+Welcome folks to the serverless dojo!
 
 In this dojo you'll participate in the fight against COVID-19, with the help of AWS Lambdas, API Gateway, DynamoDb, EventBridge and Step Functions 💪
 
