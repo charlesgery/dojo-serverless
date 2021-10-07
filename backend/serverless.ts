@@ -96,6 +96,9 @@ const serverlessConfiguration: AwsConfig.Serverless = {
         },
       ],
     },
+    chooseWaitTime: {
+      handler: 'src/handlers/stateMachine/chooseWaitTime.main'
+    },
 
     //  --- WEBSOCKET ---
     connectWebsocket: {
@@ -151,20 +154,29 @@ const serverlessConfiguration: AwsConfig.Serverless = {
                 'arn:aws:events:#{AWS::Region}:#{AWS::AccountId}:event-bus/dojo-serverless',
               event: {
                 source: ['dojo-serverless'],
-                'detail-type': ['NOTHING_REQUESTED'],
+                'detail-type': ['VIRUS_CREATION_REQUESTED'],
               },
             },
           },
         ],
         definition: {
-          StartAt: 'Wait10Sec',
+          StartAt: 'ChooseWaitTime',
           States: {
-            Wait10Sec: {
-              Type: 'Wait',
-              Seconds: 10,
-              Next: 'DoNothing',
+            ChooseWaitTime: {
+              Type: 'Task',
+              Resource: { 'Fn::GetAtt': ['chooseWaitTime', 'Arn'] },
+              Next: 'WaitXSeconds'
             },
-            DoNothing: { Type: 'Succeed' },
+            WaitXSeconds: {
+              Type: 'Wait',
+              TimestampPath: '$.waitTime',
+              Next: 'CreateVirus',
+            },
+            CreateVirus: {
+              Type: 'Task',
+              Resource: { 'Fn::GetAtt': ['createVirus', 'Arn'] },
+              End: true,
+            }
           },
         },
       },
