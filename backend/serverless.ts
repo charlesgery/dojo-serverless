@@ -132,14 +132,7 @@ const serverlessConfiguration: AwsConfig.Serverless = {
       handler: 'src/handlers/stateMachine/spreadVirus.main',
       events: [
         {
-          eventBridge: {
-            eventBus:
-              'arn:aws:events:#{AWS::Region}:#{AWS::AccountId}:event-bus/dojo-serverless',
-            pattern: {
-              source: ['dojo-serverless'],
-              'detail-type': ['LAZYNESS_DETECTED'],
-            },
-          },
+          schedule: 'rate(1 minute)',
         },
       ],
     },
@@ -169,7 +162,7 @@ const serverlessConfiguration: AwsConfig.Serverless = {
             },
             WaitXSeconds: {
               Type: 'Wait',
-              TimestampPath: '$.waitTime',
+              SecondsPath: '$.waitTime',
               Next: 'CreateVirus',
             },
             CreateVirus: {
